@@ -26,8 +26,7 @@ export const defaults = {
      * score += this.scoreThis( search[ param ], weights[ param ] );
      */
     scoreProperties     : [ 'text', 'textFlat', 'textSplit', 'value',
-                                    'valueFlat', 'valueSplit', 'description',
-                                    'descriptionSplit' ],
+    'valueFlat', 'valueSplit', 'description', 'descriptionSplit' ],
 
     /*
      * params to test with startsWith

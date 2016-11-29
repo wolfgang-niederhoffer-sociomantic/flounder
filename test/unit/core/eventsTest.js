@@ -2846,8 +2846,7 @@ describe( 'toggleOpen', () =>
                     data   : [ {
                         text    : 1,
                         value   : 1
-                    },
-                    2 ]
+                        }, 2 ]
                 },
                 3
             ],
