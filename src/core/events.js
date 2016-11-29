@@ -108,11 +108,11 @@ const events = {
             }
         } );
 
-        nativeSlice.call( multiTagWrapper.children, 0 ).forEach( el =>
+        nativeSlice.call( multiTagWrapper.children, 0, -1 ).forEach( el =>
         {
             if ( el.firstChild )
             {
-                el.firstChild.removeEventListener( 'click',
+                el.firstChild.addEventListener( 'click',
                     this.removeMultiTag );
             }
 
@@ -625,11 +625,11 @@ const events = {
      */
     displayMultipleTags( selectedOptions, multiTagWrapper )
     {
-        nativeSlice.call( multiTagWrapper.children, 0 ).forEach( el =>
+        nativeSlice.call( multiTagWrapper.children, 0, -1 ).forEach( el =>
         {
             if ( el.firstChild )
             {
-                el.firstChild.removeEventListener( 'click',
+                el.firstChild.addEventListener( 'click',
                     this.removeMultiTag );
             }
 
