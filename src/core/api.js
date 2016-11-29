@@ -197,7 +197,6 @@ const api = {
                     }
                 } );
 
-                this.setTextMultiTagIndent();
                 this.addPlaceholder();
             }
         }

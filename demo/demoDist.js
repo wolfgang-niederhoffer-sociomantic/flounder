@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _flounder = require('/Library/WebServer/Documents/flounder/src/core/flounder');
+var _flounder = require('/home/wolf/projects/flounder/src/core/flounder');
 
 var _flounder2 = _interopRequireDefault(_flounder);
 
@@ -306,7 +306,7 @@ requirejs(['flounder'], function (Flounder) {
 
 exports.default = _flounder2.default;
 
-},{"/Library/WebServer/Documents/flounder/src/core/flounder":18}],2:[function(require,module,exports){
+},{"/home/wolf/projects/flounder/src/core/flounder":18}],2:[function(require,module,exports){
 "use strict";
 
 // rawAsap provides everything we need except exception management.
@@ -454,9 +454,12 @@ function flush() {
 
 // Safari 6 and 6.1 for desktop, iPad, and iPhone are the only browsers that
 // have WebKitMutationObserver but not un-prefixed MutationObserver.
-// Must use `global` instead of `window` to work in both frames and web
+// Must use `global` or `self` instead of `window` to work in both frames and web
 // workers. `global` is a provision of Browserify, Mr, Mrs, or Mop.
-var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+
+/* globals self */
+var scope = typeof global !== "undefined" ? global : self;
+var BrowserMutationObserver = scope.MutationObserver || scope.WebKitMutationObserver;
 
 // MutationObservers are desirable because they have high priority and work
 // reliably everywhere they are implemented.
@@ -1381,7 +1384,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /* globals console */
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /* globals console */
 
 
 var _utils = require('./utils');
@@ -1406,7 +1409,6 @@ var api = {
      *
      * @return {Void} void
      */
-
     buildFromUrl: function buildFromUrl(url, callback) {
         var _this = this;
 
@@ -1563,7 +1565,6 @@ var api = {
                         }
                     });
 
-                    _this2.setTextMultiTagIndent();
                     _this2.addPlaceholder();
                 })();
             }
@@ -1962,7 +1963,7 @@ var api = {
     setByIndex: function setByIndex(index, multiple) {
         var _this8 = this;
 
-        var programmatic = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+        var programmatic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
         var refs = this.refs;
 
@@ -2019,7 +2020,7 @@ var api = {
     setByText: function setByText(text, multiple) {
         var _this9 = this;
 
-        var programmatic = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+        var programmatic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
         if (typeof text !== 'string' && text.length) {
             var _ret6 = function () {
@@ -2066,7 +2067,7 @@ var api = {
     setByValue: function setByValue(value, multiple) {
         var _this10 = this;
 
-        var programmatic = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+        var programmatic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
         if (typeof value !== 'string' && value.length) {
             var _ret7 = function () {
@@ -2101,7 +2102,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /* globals document */
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /* globals document */
 
 
 var _defaults = require('./defaults');
@@ -2127,7 +2128,6 @@ var build = {
      *
      * @return {Void} void
      */
-
     addOptionDescription: function addOptionDescription(el, text) {
         var div = document.createElement('div');
         div.innerHTML = text;
@@ -2141,12 +2141,12 @@ var build = {
      *
      * checks if a search box is required and attaches it or not
      *
-     * @param {Object} searchSibling next sibling to mount the input to
+     * @param {Object} node next sibling to mount the input to
      * @param {Object} flounder main element reference
      *
      * @return {Mixed} search node or false
      */
-    addSearch: function addSearch(searchSibling, flounder) {
+    addSearch: function addSearch(node) {
         if (this.search) {
             var classes = this.classes;
             var search = _utils2.default.constructElement({
@@ -2155,7 +2155,7 @@ var build = {
                 className: classes.SEARCH
             });
 
-            flounder.insertBefore(search, searchSibling);
+            node.appendChild(search);
 
             return search;
         }
@@ -2426,10 +2426,8 @@ var build = {
         this.defaultObj = (0, _defaults.setDefaultOption)(this, this.props, data);
         var defaultValue = this.defaultObj;
 
-        var selectedDisplayedClasses = this.multipleTags ? classes.SELECTED_DISPLAYED + ' ' + classes.MULTIPLE_SELECTED : classes.SELECTED_DISPLAYED;
-
         var selected = constructElement({
-            className: selectedDisplayedClasses,
+            className: classes.SELECTED_DISPLAYED,
             'data-value': defaultValue.value,
             'data-index': defaultValue.index
         });
@@ -2462,9 +2460,9 @@ var build = {
             }
         });
 
-        var searchLocation = this.multipleTags ? optionsListWrapper : selected;
+        var searchLocation = multiTagWrapper || flounder;
 
-        var search = this.addSearch(searchLocation, flounder);
+        var search = this.addSearch(searchLocation);
 
         var built = this.buildData(defaultValue, data, optionsList, select);
 
@@ -2720,7 +2718,6 @@ var classes = {
     MULTIPLE_TAG_FLOUNDER: 'flounder--multiple',
     MULTI_TAG_LIST: 'flounder__multi--tag--list',
     MULTIPLE_SELECT_TAG: 'flounder__multiple--select--tag',
-    MULTIPLE_SELECTED: 'flounder__multiple--selected',
     MULTIPLE_TAG_CLOSE: 'flounder__multiple__tag__close',
     NO_RESULTS: 'flounder__no-results',
     OPEN: 'open',
@@ -2803,9 +2800,9 @@ var defaults = {
      * @return {Void} void
      */
     setDefaultOption: function setDefaultOption(context) {
-        var configObj = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+        var configObj = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var originalData = arguments[2];
-        var rebuild = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+        var rebuild = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
         /**
          * ## setIndexDefault
@@ -2968,7 +2965,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /* globals console, document, setTimeout, window */
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /* globals console, document, setTimeout, window */
 
 
 var _utils = require('./utils');
@@ -2992,7 +2989,6 @@ var events = {
      *
      * @return {Void} void
      */
-
     addFirstTouchListeners: function addFirstTouchListeners() {
         var refs = this.refs;
         refs.selected.addEventListener('click', this.firstTouchController);
@@ -3075,9 +3071,10 @@ var events = {
         });
 
         nativeSlice.call(multiTagWrapper.children, 0).forEach(function (el) {
-            var firstChild = el.firstChild;
+            if (el.firstChild) {
+                el.firstChild.removeEventListener('click', _this.removeMultiTag);
+            }
 
-            firstChild.addEventListener('click', _this.removeMultiTag);
             el.addEventListener('keydown', _this.checkMultiTagKeydown);
         });
     },
@@ -3534,9 +3531,10 @@ var events = {
         var _this4 = this;
 
         nativeSlice.call(multiTagWrapper.children, 0).forEach(function (el) {
-            var firstChild = el.firstChild;
+            if (el.firstChild) {
+                el.firstChild.removeEventListener('click', _this4.removeMultiTag);
+            }
 
-            firstChild.removeEventListener('click', _this4.removeMultiTag);
             el.removeEventListener('keydown', _this4.checkMultiTagKeydown);
         });
 
@@ -3548,7 +3546,7 @@ var events = {
             this.addPlaceholder();
         }
 
-        this.setTextMultiTagIndent();
+        this.addSearch(multiTagWrapper);
     },
 
 
@@ -3765,7 +3763,6 @@ var events = {
 
         this.removeNoMoreOptionsMessage();
         this.removeNoResultsMessage();
-        this.setTextMultiTagIndent();
 
         selected.setAttribute('data-value', value);
         selected.setAttribute('data-index', index);
@@ -4108,30 +4105,6 @@ var events = {
 
 
     /**
-     * ## setTextMultiTagIndent
-     *
-     * sets the text-indent on the search field to go around selected tags
-     *
-     * @return {Void} void
-     */
-    setTextMultiTagIndent: function setTextMultiTagIndent() {
-        var _this7 = this;
-
-        var refs = this.refs;
-        var search = refs.search;
-
-        var offset = 0;
-
-        nativeSlice.call(refs.multiTagWrapper.children, 0).forEach(function (e) {
-            offset += _utils2.default.getElWidth(e, _this7.setTextMultiTagIndent, _this7);
-        });
-
-        /* istanbul ignore next */
-        search.style.textIndent = offset > 0 ? offset + 'px' : '';
-    },
-
-
-    /**
      * ## toggleClosed
      *
      * post toggleList, this runs it the list should be closed
@@ -4145,7 +4118,7 @@ var events = {
      * @return {Void} void
      */
     toggleClosed: function toggleClosed(e, optionsList, refs, wrapper) {
-        var exit = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+        var exit = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
         var classes = this.classes;
 
@@ -4294,7 +4267,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* globals console, document */
 
@@ -4338,7 +4311,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * @return {Object} Flounder instance
  */
-
 var Flounder = function () {
     _createClass(Flounder, [{
         key: 'componentWillUnmount',
@@ -4554,12 +4526,10 @@ var Flounder = function () {
 
             this.buildDom();
 
-            var _utils$setPlatform = _utils2.default.setPlatform();
-
-            var isOsx = _utils$setPlatform.isOsx;
-            var isIos = _utils$setPlatform.isIos;
-            var multiSelect = _utils$setPlatform.multiSelect;
-
+            var _utils$setPlatform = _utils2.default.setPlatform(),
+                isOsx = _utils$setPlatform.isOsx,
+                isIos = _utils$setPlatform.isIos,
+                multiSelect = _utils$setPlatform.multiSelect;
 
             this.isOsx = isOsx;
             this.isIos = isIos;
@@ -4671,8 +4641,8 @@ var Flounder = function () {
         value: function sortData(data) {
             var _this2 = this;
 
-            var res = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-            var i = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+            var res = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+            var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
             data.forEach(function (d) {
                 if (d.header) {
@@ -4996,7 +4966,7 @@ var Sole = exports.Sole = function () {
     }, {
         key: 'isThereAnythingRelatedTo',
         value: function isThereAnythingRelatedTo() {
-            var query = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+            var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
             var ratedRes = void 0;
 
@@ -5128,7 +5098,6 @@ var utils = {
      *
      * @return {Void} void
      */
-
     addClass: function addClass(el, clss) {
         if (typeof clss !== 'string' && clss.length) {
             clss.forEach(function (c) {
@@ -5260,7 +5229,7 @@ var utils = {
      * @return {Integer} adjusted width
      */
     getElWidth: function getElWidth(el, cb, context) {
-        var timeout = arguments.length <= 3 || arguments[3] === undefined ? 1500 : arguments[3];
+        var timeout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1500;
 
         var style = window.getComputedStyle(el);
 
@@ -5311,7 +5280,7 @@ var utils = {
      * @return {Void} void
      */
     iosVersion: function iosVersion() {
-        var windowObj = arguments.length <= 0 || arguments[0] === undefined ? window : arguments[0];
+        var windowObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
 
         if (/iPad|iPhone|iPod/.test(windowObj.navigator.platform)) {
             if (windowObj.indexedDB) {
@@ -5421,7 +5390,7 @@ var utils = {
      * @return {Void} void
      */
     setPlatform: function setPlatform() {
-        var windowObj = arguments.length <= 0 || arguments[0] === undefined ? window : arguments[0];
+        var windowObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
 
         var platform = windowObj.navigator.platform;
         var isOsx = platform.indexOf('Mac') !== -1;

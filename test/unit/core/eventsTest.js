@@ -2508,54 +2508,6 @@ describe( 'setSelectValueClick', () =>
 } );
 
 
-
-/**
- * ## setTextMultiTagIndent
- *
- * sets the text-indent on the search field to go around selected tags
- *
- * @return {Void} void
- */
-describe( 'setTextMultiTagIndent', () =>
-{
-    it( 'should set the search box text indent correctly', () =>
-    {
-        document.body.flounder = null;
-
-        const data = [
-            'doge',
-            'moon'
-        ];
-
-        const flounder    = new Flounder( document.body, {
-            data            : data,
-            defaultIndex    : 0,
-            multipleTags    : true
-        } );
-        const refs = flounder.refs;
-
-        const span = document.createElement( 'SPAN' );
-        span.className = 'flounder__multiple--select--tag';
-        span.innerHTML =
-            '<a class="flounder__multiple__tag__close" data-index="1"></a>doge';
-
-        refs.multiTagWrapper.appendChild( span );
-
-        flounder.setTextMultiTagIndent();
-
-        const style       = window.getComputedStyle( span );
-
-        const spanOffset  = span.offsetWidth +
-                                        parseInt( style[ 'margin-left' ] ) +
-                                        parseInt( style[ 'margin-right' ] );
-
-        assert.equal( refs.search.style.textIndent,
-                                    spanOffset > 0 ? `${spanOffset}px` : '' );
-    } );
-} );
-
-
-
 /**
  * ## toggleClosed
  *
@@ -2846,7 +2798,7 @@ describe( 'toggleOpen', () =>
                     data   : [ {
                         text    : 1,
                         value   : 1
-                        }, 2 ]
+                    }, 2 ]
                 },
                 3
             ],

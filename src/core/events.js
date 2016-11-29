@@ -110,9 +110,12 @@ const events = {
 
         nativeSlice.call( multiTagWrapper.children, 0 ).forEach( el =>
         {
-            const firstChild = el.firstChild;
+            if ( el.firstChild )
+            {
+                el.firstChild.removeEventListener( 'click',
+                    this.removeMultiTag );
+            }
 
-            firstChild.addEventListener( 'click', this.removeMultiTag );
             el.addEventListener( 'keydown', this.checkMultiTagKeydown );
         } );
     },
@@ -624,9 +627,12 @@ const events = {
     {
         nativeSlice.call( multiTagWrapper.children, 0 ).forEach( el =>
         {
-            const firstChild = el.firstChild;
+            if ( el.firstChild )
+            {
+                el.firstChild.removeEventListener( 'click',
+                    this.removeMultiTag );
+            }
 
-            firstChild.removeEventListener( 'click', this.removeMultiTag );
             el.removeEventListener( 'keydown', this.checkMultiTagKeydown );
         } );
 
@@ -641,7 +647,7 @@ const events = {
             this.addPlaceholder();
         }
 
-        this.setTextMultiTagIndent();
+        this.addSearch( multiTagWrapper );
     },
 
 
@@ -885,7 +891,6 @@ const events = {
 
         this.removeNoMoreOptionsMessage();
         this.removeNoResultsMessage();
-        this.setTextMultiTagIndent();
 
         selected.setAttribute( 'data-value', value );
         selected.setAttribute( 'data-index', index );
@@ -1275,30 +1280,6 @@ const events = {
             utils.removeClass( refs.data[ 0 ], selectedClass );
             refs.selectOptions[ 0 ].selected = false;
         }
-    },
-
-
-    /**
-     * ## setTextMultiTagIndent
-     *
-     * sets the text-indent on the search field to go around selected tags
-     *
-     * @return {Void} void
-     */
-    setTextMultiTagIndent()
-    {
-        const refs    = this.refs;
-        const search  = refs.search;
-
-        let offset  = 0;
-
-        nativeSlice.call( refs.multiTagWrapper.children, 0 ).forEach( e =>
-        {
-            offset += utils.getElWidth( e, this.setTextMultiTagIndent, this );
-        } );
-
-        /* istanbul ignore next */
-        search.style.textIndent = offset > 0 ? `${offset}px` : '';
     },
 
 
