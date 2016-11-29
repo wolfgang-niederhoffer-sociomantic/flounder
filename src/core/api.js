@@ -176,7 +176,7 @@ const api = {
 
             if ( multiTagWrapper )
             {
-                const tags = nativeSlice.call( multiTagWrapper.children );
+                const tags = nativeSlice.call( multiTagWrapper.children, 0, -1 );
 
                 tags.forEach( ( el, count ) =>
                 {
@@ -191,8 +191,7 @@ const api = {
                     }
                     else
                     {
-                        el.removeEventListener( 'click',
-                                                    this.removeMultiTag );
+                        el.removeEventListener( 'click', this.removeMultiTag );
                         el.remove();
                     }
                 } );
