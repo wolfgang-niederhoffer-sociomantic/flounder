@@ -366,12 +366,8 @@ const build = {
         this.defaultObj     = setDefaultOption( this, this.props, data );
         const defaultValue  = this.defaultObj;
 
-        const selectedDisplayedClasses = this.multipleTags ?
-                `${classes.SELECTED_DISPLAYED} ${classes.MULTIPLE_SELECTED}` :
-                classes.SELECTED_DISPLAYED;
-
-        const selected          = constructElement( {
-            className       : selectedDisplayedClasses,
+        const selected      = constructElement( {
+            className       : classes.SELECTED_DISPLAYED,
             'data-value'    : defaultValue.value,
             'data-index'    : defaultValue.index
         } );
