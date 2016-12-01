@@ -108,7 +108,7 @@ const events = {
             }
         } );
 
-        nativeSlice.call( multiTagWrapper.children, 0, -1 ).forEach( el =>
+        nativeSlice.call( multiTagWrapper.children ).forEach( el =>
         {
             if ( el.firstChild )
             {
@@ -625,11 +625,11 @@ const events = {
      */
     displayMultipleTags( selectedOptions, multiTagWrapper )
     {
-        nativeSlice.call( multiTagWrapper.children, 0, -1 ).forEach( el =>
+        nativeSlice.call( multiTagWrapper.children ).forEach( el =>
         {
             if ( el.firstChild )
             {
-                el.firstChild.addEventListener( 'click',
+                el.firstChild.removeEventListener( 'click',
                     this.removeMultiTag );
             }
 
@@ -857,6 +857,8 @@ const events = {
         const target          = e.target;
         const data            = this.refs.data;
         const targetIndex     = target.getAttribute( 'data-index' );
+
+        console.log('in removeMultiTag');
 
         select[ targetIndex ].selected = false;
 
