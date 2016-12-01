@@ -1446,7 +1446,7 @@ const events = {
         }
 
         if ( refs.multiTagWrapper && refs.multiTagWrapper.childNodes.length ===
-                                            optionCount )
+                                            optionCount + 1 )
         {
             this.removeNoResultsMessage();
             this.addNoMoreOptionsMessage();
