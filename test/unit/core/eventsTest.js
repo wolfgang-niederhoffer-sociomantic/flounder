@@ -1765,7 +1765,7 @@ describe( 'removeMultiTag', () =>
             stopPropagation : stopPropagation
         } );
 
-        assert.equal( multiTagWrapper.children.length, 1 );
+        assert.equal( multiTagWrapper.children.length, 2 );
         assert.equal( preventDefault.callCount, 1 );
         assert.equal( stopPropagation.callCount, 1 );
     } );
