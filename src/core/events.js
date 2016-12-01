@@ -556,7 +556,7 @@ const events = {
     checkMultiTagKeydownRemove( target, focusSearch, index )
     {
         const children  = this.refs.multiTagWrapper.children;
-        const siblings  = children.length - 1;
+        const siblings  = children.length - 2;
 
         target.firstChild.click();
 
@@ -1117,7 +1117,7 @@ const events = {
         const refs              = this.refs;
         const selectTag         = refs.select;
         const data              = refs.data;
-        const dataMaxIndex      = data.length - 1;
+        const dataMaxIndex      = data.length - 2;
         let index               = selectTag.selectedIndex + increment;
 
         if ( index > dataMaxIndex )
