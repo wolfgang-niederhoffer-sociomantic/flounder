@@ -1415,7 +1415,7 @@ describe( 'displayMultipleTags', () =>
     {
         flounder.displayMultipleTags( [ refsData[ 1 ], refsData[ 2 ] ],
                                                             multiTagWrapper );
-        assert.equal( refs.multiTagWrapper.children.length, 2 );
+        assert.equal( refs.multiTagWrapper.children.length, 3 );
     } );
 
 
