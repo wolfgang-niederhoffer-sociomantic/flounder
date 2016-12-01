@@ -528,7 +528,7 @@ const events = {
 
         const adjustment = keyCode - 38;
         const newIndex   = index + adjustment;
-        const length     = children.length - 1;
+        const length     = children.length - 2;
 
         if ( newIndex > length )
         {
